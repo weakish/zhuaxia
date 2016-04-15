@@ -14,6 +14,7 @@ SAMPLE_DB   = path.join(PKG_PATH, 'conf','default.history')
 CONF_FILE   = path.join(USER_PATH, "zhuaxia.conf")
 HIST_DB     = path.join(USER_PATH, "history.data")
 META_DB_FILE = path.join(USER_PATH, "zhuaxia.metadb")
+META_DB_JSON = path.join(USER_PATH, "zhuaxia_metadb.json")
 
 
 ######user config####

@@ -92,6 +92,9 @@ help_info                        = u"""
 
         -m : （仅适用于）网易云音乐不写入 ID3 标签，保存详细信息到 ~/.zhuaxia/zhuxia.db
 
+        -j : 导出音乐元数据库为 JSON 文件 (~/.zhuaxia/zhuaxia_metadb.json)
+             如果这个选项被使用, 其它选项将被忽略
+
         -l : 下载歌曲的lrc格式歌词
 
         -f : 从文件下载

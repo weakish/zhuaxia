@@ -90,6 +90,8 @@ help_info                        = u"""
 
         -m : (NetEase only) does not write ID3 tags to file, instead write meta data to ~/.zhuaxia/zhuxia.db
 
+        -j : export metadb to JSON (~/.zhuaxia/zhuaxia_metadb.json), if this option is given, other options will be ignored.
+
         -l : download lyric too (lrc format)
 
         -f : download from url file (see example in [USAGE])

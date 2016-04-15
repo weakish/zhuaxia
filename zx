@@ -6,6 +6,8 @@ import sys
 #load config at very beginning
 config.load_config()
 
+import marshal
+import json
 import sys,getopt
 import zhuaxia.util as util
 import logging
@@ -56,6 +58,25 @@ def export_or_clear_hist(export_hist, empty_hist):
                 hist_handler.empty_hists()
                 sys.exit(0)
 
+def to_json(thing, f):
+    """dump to JSON file"""
+    json.dump(thing, open(f, 'w'))
+
+def marshal_load_iter(f):
+    while True:
+        try:
+            yield marshal.load(f)
+        except EOFError:
+            return
+
+def metadb_to_json():
+    """Convert metadb to JSON file."""
+    songs = []
+    with open(config.META_DB_FILE, 'rb') as f:
+        for song in marshal_load_iter(f):
+            songs.append(song)
+    to_json(songs, config.META_DB_JSON)
+
 if __name__ == '__main__':
     log.setup_log(logger_name, config.LOG_LVL_CONSOLE, config.LOG_LVL_FILE)
     LOG = log.get_logger(logger_name)
@@ -73,7 +94,7 @@ if __name__ == '__main__':
 
         if len(sys.argv)<2: raise getopt.GetoptError("parameters are missing...")
 
-        opts, args = getopt.getopt(sys.argv[1:],":f:Hhvpmlied")
+        opts, args = getopt.getopt(sys.argv[1:],":f:Hhvpmliedj")
         for o, a in opts:
             if o == '-h':
                 usage()
@@ -98,6 +119,10 @@ if __name__ == '__main__':
                 export_hist = True
             elif o == '-d': #empty history
                 empty_hist = True
+            elif o == '-j': # export metadb to json
+                metadb_to_json()
+                sys.exit(0)
+
 
         #handle the export and empty
         export_or_clear_hist(export_hist, empty_hist)
