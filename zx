@@ -59,12 +59,13 @@ def export_or_clear_hist(export_hist, empty_hist):
 if __name__ == '__main__':
     log.setup_log(logger_name, config.LOG_LVL_CONSOLE, config.LOG_LVL_FILE)
     LOG = log.get_logger(logger_name)
-    
+
     try:
         hq             = False
         inFile         = ''
         inUrl          = ''
         needProxyPool  = False
+        need_detail    = False
         dl_lyric       = False
         incremental_dl = False
         export_hist    = False
@@ -72,7 +73,7 @@ if __name__ == '__main__':
 
         if len(sys.argv)<2: raise getopt.GetoptError("parameters are missing...")
 
-        opts, args = getopt.getopt(sys.argv[1:],":f:Hhvplied")
+        opts, args = getopt.getopt(sys.argv[1:],":f:Hhvpmlied")
         for o, a in opts:
             if o == '-h':
                 usage()
@@ -87,6 +88,8 @@ if __name__ == '__main__':
             elif o == '-p':
                 LOG.warning(msg.experimental)
                 needProxyPool = True
+            elif o == '-m':
+                need_detail = True
             elif o == '-l':
                 dl_lyric = True
             elif o == '-i':
@@ -95,8 +98,8 @@ if __name__ == '__main__':
                 export_hist = True
             elif o == '-d': #empty history
                 empty_hist = True
-        
-        #handle the export and empty 
+
+        #handle the export and empty
         export_or_clear_hist(export_hist, empty_hist)
 
         ## -f check file
@@ -110,6 +113,7 @@ if __name__ == '__main__':
         option = user_option.Option()
         option.is_hq = hq
         option.need_proxy_pool = needProxyPool
+        option.need_detail = need_detail
         option.dl_lyric = dl_lyric
         option.inFile = inFile
         option.inUrl = inUrl
@@ -120,7 +124,7 @@ if __name__ == '__main__':
 
         # ok, let's go!
         commander.shall_I_begin(option)
-                
+
     except getopt.GetoptError as e:
         LOG.error(str(e))
         print log.hl("\nTo know how to use zhuaxia, run:\n\tzx -h\n",'cyan')

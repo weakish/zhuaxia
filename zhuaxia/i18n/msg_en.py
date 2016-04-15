@@ -10,14 +10,14 @@ fmt_summary_success_header       = u'Name\tLocation'
 fmt_summary_failed_title         = u'Failed Downloadings:'
 fmt_summary_failed_header        = u'Name\tLocation'
 summary_prompt                   = u'(q)uit/(v)iew summary/(s)ave summary. Please input [q/v/s]:'
-summary_prompt_err               = u"Invalid input.\n" 
-summary_saved                    = u" summary was saved at: %s" 
+summary_prompt_err               = u"Invalid input.\n"
+summary_saved                    = u" summary was saved at: %s"
 
-history_clear_confirm            = u" %d downloading histories found. Are you sure to remove all these histories? [y/n]" 
-history_clearing                 = u" Clear zhuaxia downloading hisotory (other options will be ignored)" 
-history_cleared                  = u" All zhuaxia download history has been cleared." 
-history_exporting                = u" Exporting download history (other options will be ignored)..." 
-history_exported                 = u" Zhuaxia download-history was exported to: %s" 
+history_clear_confirm            = u" %d downloading histories found. Are you sure to remove all these histories? [y/n]"
+history_clearing                 = u" Clear zhuaxia downloading hisotory (other options will be ignored)"
+history_cleared                  = u" All zhuaxia download history has been cleared."
+history_exporting                = u" Exporting download history (other options will be ignored)..."
+history_exported                 = u" Zhuaxia download-history was exported to: %s"
 
 fmt_all_finished                 = u' All jobs are finished.'
 fmt_insert_hist                  = u' Recording history for successful downloads...'
@@ -71,7 +71,7 @@ fmt_links_in_file                = u' file contains urls: %d'
 
 experimental                     = u'-p is an experimental option. Auto fetching proxy from proxy pool. Downloading could be slow or unstable due to the unknown proxy status.'
 ver_text                         = u'zhuaxia '
-help_info                        = u""" 
+help_info                        = u"""
     zhuaxia -- download mp3 music from [xiami.com] and [music.163.com]
 
     [CONFIG FILE:]  $HOME/.zhuaxia/zhuaxia.conf
@@ -87,6 +87,8 @@ help_info                        = u"""
                 - no special requirement
 
         -h : show this help
+
+        -m : (NetEase only) does not write ID3 tags to file, instead write meta data to ~/.zhuaxia/zhuxia.db
 
         -l : download lyric too (lrc format)
 
@@ -136,10 +138,10 @@ help_info                        = u"""
 
         Other Examples:
 
-                download lyrics with songs: 
+                download lyrics with songs:
                     zx -l "http://music.163.com/song?id=27552647"
 
-                incremental download songs with lyrics: 
+                incremental download songs with lyrics:
                     zx -li "http://music.163.com/song?id=27552647"
 
                 export zhuaxia download history. File will be save under "download.dir" in config file:
@@ -147,9 +149,9 @@ help_info                        = u"""
 
                 clear(delete) all zhuaxia download history:
                     zx -d
-                
+
     [AUTHOR]
-        
+
         Kai Yuan <kent.yuan(at)gmail.com>
         please report bugs or feature requests at https://github.com/sk1418/zhuaxia/issues
         """

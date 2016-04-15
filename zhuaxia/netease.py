@@ -39,8 +39,8 @@ pubKey = '010001'
 
 class NeteaseSong(Song):
     """
-    163 Song class, if song_json was given, 
-    Song.post_set() needs to be called for post-setting 
+    163 Song class, if song_json was given,
+    Song.post_set() needs to be called for post-setting
     abs_path, filename, etc.
     url example: http://music.163.com/song?id=209235
     """
@@ -70,6 +70,9 @@ class NeteaseSong(Song):
     def init_by_json(self,js):
         #song_id
         self.song_id = js['id']
+        # meta
+        if self.handler.need_detail:
+            self.json = js
         #name
         self.song_name = util.decode_html(js['name'])
         LOG.debug("parsing song %s ...."%self.song_name)
@@ -119,7 +122,7 @@ class NeteaseAlbum(object):
         """url example: http://music.163.com/album?id=2646379"""
 
         self.handler=m163
-        self.url = url 
+        self.url = url
         self.album_id = re.search(r'(?<=/album\?id=)\d+', self.url).group(0)
         LOG.debug(msg.head_163 + msg.fmt_init_album % self.album_id)
         self.year = None
@@ -211,6 +214,7 @@ class Netease(Handler):
     def __init__(self, option):
         Handler.__init__(self,option.proxies)
         self.is_hq = option.is_hq
+        self.need_detail = option.need_detail
         self.dl_lyric = option.dl_lyric
         #headers
         self.HEADERS = {'User-Agent':AGENT}
@@ -218,7 +222,7 @@ class Netease(Handler):
         self.HEADERS['Cookie'] = 'appver=1.7.3'
 
     def read_link(self, link):
-        
+
         retVal = None
         requests_proxy = {}
         if config.CHINA_PROXY_HTTP:
@@ -229,7 +233,7 @@ class Netease(Handler):
             while True:
                 try:
                     retVal =  requests.get(link, headers=self.HEADERS, proxies=requests_proxy)
-                    break 
+                    break
                 except requests.exceptions.ConnectionError:
                     LOG.debug('invalid proxy detected, removing from pool')
                     self.proxies.del_proxy(requests_proxy['http'])
@@ -285,6 +289,6 @@ class Netease(Handler):
             r = self.read_link(result)
             if r.history:
                 return  r.history[0].headers['Location']
-        
+
         return result
 

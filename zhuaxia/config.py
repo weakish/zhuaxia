@@ -1,4 +1,4 @@
-from os import path 
+from os import path
 import os
 import shutil, sys
 import ConfigParser
@@ -13,6 +13,7 @@ SAMPLE_CONF = path.join(PKG_PATH, 'conf','default.conf')
 SAMPLE_DB   = path.join(PKG_PATH, 'conf','default.history')
 CONF_FILE   = path.join(USER_PATH, "zhuaxia.conf")
 HIST_DB     = path.join(USER_PATH, "history.data")
+META_DB_FILE = path.join(USER_PATH, "zhuaxia.metadb")
 
 
 ######user config####
@@ -26,7 +27,7 @@ THREAD_POOL_SIZE     = 3
 DOWNLOAD_DIR         = '/tmp'
 SHOW_DONE_NUMBER     = 5
 
-#here check topx, if the value <= 0, there is no upper-bound 
+#here check topx, if the value <= 0, there is no upper-bound
 DOWNLOAD_TOP_SONG    = 10
 
 #a variable name dict for dynamic assignment
@@ -64,7 +65,7 @@ def load_single_config(conf_parser, conf_key):
             log.warn(config_warn_msg % (conf_key, str(globals()[var_dict[conf_key][0]])))
 
 def load_config():
-    
+
     # if conf file doesn't exist, cp default conf there
     if not path.exists(CONF_FILE):
         init_config()

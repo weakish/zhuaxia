@@ -2,6 +2,7 @@
 from os import path
 import os
 import datetime
+import marshal
 import sys
 import requests
 import config, log, util
@@ -40,7 +41,7 @@ failed_list=[]
 
 class Download_Progress(object):
     """
-    a download progress object 
+    a download progress object
     """
     def __init__(self, filename):
         self.filename = filename
@@ -92,6 +93,13 @@ def write_mp3_meta(song):
     id3.add(TRCK(encoding=3, text=str(song.track_no)))
     id3.save(song.abs_path)
 
+def write_meta_to_db(song):
+    """
+    write mp3 meta data to a database file.
+    """
+    with open(config.META_DB_FILE, 'ab') as f:
+        marshal.dump(song.json, f)
+
 def print_progress():
     """ print progress info """
     #the factor of width used for progress bar
@@ -124,14 +132,14 @@ def print_progress():
         sum_rate += rate
 
         bar = util.ljust('=' * int(percent * bar_count), bar_count)
-        per100 = percent * 100 
+        per100 = percent * 100
         single_p =  fmt_progress % \
                 (util.rjust(filename,(width - bar_count -22)), bar, per100,rate) # the -20 is for the xx.x% and [ and ] xx.xkb/s (spaces)
         all_p.append(log.hl(single_p,'green'))
-    
+
     #calculate total progress percent
     total_percent = float(sum_percent+done)/total
-    
+
     #global progress
     g_text = msg.fmt_dl_progress % (done, total)
     g_bar = util.ljust('#' * int(total_percent* bar_count), bar_count)
@@ -183,10 +191,10 @@ def fill_download_progress(filename, total_length, finished_length):
 
 
 def download_url_urllib(url,filepath,show_progress=False, proxy=None):
-    """ 
+    """
     this function does the samething as the download_url(). The different is
     this function uses the standard urllib2 to download files.
-    basic downloading function, download url and save to 
+    basic downloading function, download url and save to
     file path
     http.get timeout: 30s
 
@@ -201,19 +209,19 @@ def download_url_urllib(url,filepath,show_progress=False, proxy=None):
     try:
         proxyServer = urllib2.ProxyHandler(proxy) if proxy else None
         opener = urllib2.build_opener()
-        # for downloading, ignore the proxy, it seems that if 
+        # for downloading, ignore the proxy, it seems that if
         # we got the real link, both 163 and xiami don't need a CN proxy to
         # download the songs
 
         # if proxyServer:
             # opener = urllib2.build_opener(proxyServer)
-            
+
         urllib2.install_opener(opener)
         r = urllib2.urlopen(url, timeout=30)
 
         if r.getcode() == 200:
             total_length = int(r.info().getheader('Content-Length').strip())
-            
+
             done_length = 0
             chunk_size=1024
             with open(filepath,'wb') as f:
@@ -236,8 +244,8 @@ def download_url_urllib(url,filepath,show_progress=False, proxy=None):
         return 1
 
 def download_url(url,filepath,show_progress=False, proxy=None):
-    """ 
-    basic downloading function, download url and save to 
+    """
+    basic downloading function, download url and save to
     file path
     http.get timeout: 30s
     """
@@ -270,7 +278,7 @@ def download_url(url,filepath,show_progress=False, proxy=None):
 
 def download_single_song(song):
     """
-    download a single song 
+    download a single song
     max retry 5 times
     """
     global done, progress
@@ -295,11 +303,14 @@ def download_single_song(song):
         dl_result = download_url_urllib(song.dl_link, mp3_file, show_progress=True, proxy= get_proxy(song))
 
         if dl_result == 0: #success
-            write_mp3_meta(song)
+            if hasattr(song, 'json'):
+                    write_meta_to_db(song)
+            else:
+                write_mp3_meta(song)
             LOG.debug("[DL_Song] Finished: %s" % mp3_file)
             break
         else: # return code is not 0
-            
+
             #remove from progress
             del progress[song.filename]
             if path.exists(song.abs_path):
@@ -312,7 +323,7 @@ def download_single_song(song):
     done+=1 #no matter success of fail, the task was done
     if dl_result == 0:
         #set the success flag
-        song.success = True 
+        song.success = True
         fill_done2show(song)
         #remove from progress
         del progress[song.filename]
@@ -419,7 +430,7 @@ def download_lyrics(songs):
     """download / write lyric to file if it is needed"""
 
     url_lyric_163 = "http://music.163.com/api/song/lyric?id=%s&lv=1"
-    
+
     percent_bar_factor = 0.4
     width = util.get_terminal_size()[1] -5
     bar_count = (int(width*percent_bar_factor)-2/10) # number of percent bar

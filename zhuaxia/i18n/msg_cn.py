@@ -10,14 +10,14 @@ fmt_summary_success_header       = u'歌曲名\t保存路径'
 fmt_summary_failed_title         = u'失败下载列表:'
 fmt_summary_failed_header        = u'歌曲名\t保存路径'
 summary_prompt                   = u'(q)退出/(v)查看下载报告/(s)保存下载报告. 请输入 [q/v/s]:'
-summary_prompt_err               = u" 无效输入\n" 
-summary_saved                    = u" 下载报告保存于: %s" 
+summary_prompt_err               = u" 无效输入\n"
+summary_saved                    = u" 下载报告保存于: %s"
 
-history_clear_confirm            = u" 找到 %d 条下载记录, 确认要清空所有下载历史记录? [y/n]" 
-history_clearing                 = u" 忽略其它选项,清空zhuaxia下载历史记录..." 
-history_cleared                  = u" zhuaxia所有下载记录已清空" 
-history_exporting                = u" 忽略其它选项, 正在导出下载历史记录..." 
-history_exported                 = u" 下载历史记录导出到: %s" 
+history_clear_confirm            = u" 找到 %d 条下载记录, 确认要清空所有下载历史记录? [y/n]"
+history_clearing                 = u" 忽略其它选项,清空zhuaxia下载历史记录..."
+history_cleared                  = u" zhuaxia所有下载记录已清空"
+history_exporting                = u" 忽略其它选项, 正在导出下载历史记录..."
+history_exported                 = u" 下载历史记录导出到: %s"
 
 fmt_insert_hist                  = u' 为成功下载建立历史记录...'
 fmt_all_finished                 = u' 所有任务都已完成'
@@ -72,7 +72,7 @@ fmt_links_in_file                = u' 文件包含链接总数: %d'
 
 experimental                     = u'-p 选项为实验性选项. 自动获取代理服务器池解析/下载。因代理服务器稳定性未知，下载可能会慢或不稳定。'
 ver_text                         = u'zhuaxia (抓虾) '
-help_info                        = u""" 
+help_info                        = u"""
     zhuaxia (抓虾) -- 抓取[虾米音乐]和[网易云音乐]的 mp3 音乐
 
     [CONFIG FILE:] $HOME/.zhuaxia/zhuaxia.conf
@@ -90,6 +90,8 @@ help_info                        = u"""
 
         -h : 显示帮助
 
+        -m : （仅适用于）网易云音乐不写入 ID3 标签，保存详细信息到 ~/.zhuaxia/zhuxia.db
+
         -l : 下载歌曲的lrc格式歌词
 
         -f : 从文件下载
@@ -102,7 +104,7 @@ help_info                        = u"""
              如果这个选项被使用, 其它选项将被忽略
 
         -d : 清空当前下载历史记录
-             如果这个选项被使用, 其它选项将被忽略. 
+             如果这个选项被使用, 其它选项将被忽略.
              -e 和-d 选项不能同时使用
 
         -v : 显示版本信息
@@ -145,7 +147,7 @@ help_info                        = u"""
                     zx -d
 
     [AUTHOR]
-        
+
         Kai Yuan <kent.yuan(at)gmail.com>
         please report bugs or feature requests at https://github.com/sk1418/zhuaxia/issues
         """
